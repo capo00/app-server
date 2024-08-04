@@ -1,4 +1,6 @@
 const express = require("express");
+const Authentication = require("./authentication");
+
 const Command = {
   createCommands(app, api) {
     const apis = {
@@ -10,6 +12,7 @@ const Command = {
           };
         }
       },
+      ...Authentication.API,
       ...api,
     }
 
@@ -25,10 +28,10 @@ const Command = {
 
         try {
           // console.info(`{${reqId}}[${new Date().toISOString()}](${method}) /${uc} start`, dtoIn);
-          const dtoOut = await fn({ dtoIn, request: req, response: res, method, useCase: uc, next });
+          const dtoOut = await fn({ dtoIn, req, res, method, useCase: uc, next });
           // console.info(`{${reqId}}[${new Date().toISOString()}](${method}) /${uc} end`, dtoOut);
 
-          res.json(dtoOut == null ? {} : dtoOut);
+          if (dtoOut !== false) res.json(dtoOut == null ? {} : dtoOut);
         } catch (e) {
           console.error(`[${new Date().toISOString()}](${method}) /${uc} Unexpected exception. dtoIn = `, dtoIn, e);
           res.status(500).send({ message: "Unexpected exception", error: e });
