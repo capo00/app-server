@@ -1,7 +1,6 @@
 module.exports = {
   port: process.env.PORT || 8080,
   mongodbUri: process.env.MONGODB_URI,
-  mongodbName: process.env.MONGODB_NAME,
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,

@@ -11,11 +11,12 @@
   "license": "MIT",
   "description": "",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.5.2",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "oc_mongo": "C:\\Users\\User\\Documents\\work\\github\\oc_mongo\\target\\oc_mongo-0.1.2.tgz",
+    "oc_app-auth": "C:\\Users\\User\\Documents\\work\\github\\oc_app-auth\\target\\oc_app-auth-0.1.0.tgz"
   }
 }

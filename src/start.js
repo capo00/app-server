@@ -1,3 +1,3 @@
-const App = require("./services/app");
+const OcAppServer = require("./index");
 
-App.init();
+OcAppServer.App.init();

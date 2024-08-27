@@ -1,5 +1,5 @@
 const express = require("express");
-const Authentication = require("./authentication");
+const OcAuth = require("oc_app-auth");
 
 const Command = {
   createCommands(app, api) {
@@ -12,17 +12,16 @@ const Command = {
           };
         }
       },
-      ...Authentication.API,
       ...api,
     }
 
     app.use(express.json());
 
     for (let uc in apis) {
-      const { method, fn } = apis[uc];
+      const { method, fn, auth } = apis[uc];
       // const reqId = Tools.generateId();
 
-      app[method]("/" + uc, async (req, res, next) => {
+      const call = async (req, res, next) => {
         let dtoIn = req.query;
         if (req.body && req.is("application/json")) dtoIn = { ...dtoIn, ...req.body };
 
@@ -36,7 +35,12 @@ const Command = {
           console.error(`[${new Date().toISOString()}](${method}) /${uc} Unexpected exception. dtoIn = `, dtoIn, e);
           res.status(500).send({ message: "Unexpected exception", error: e });
         }
-      });
+      };
+
+      const calls = [call];
+      if (auth) calls.unshift(OcAuth.authentication);
+
+      app[method]("/" + uc, ...calls);
     }
   }
 }

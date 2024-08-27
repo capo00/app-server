@@ -1,19 +1,27 @@
 const path = require("path");
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require("cookie-parser");
 require('dotenv').config();
-const config = require('../config/config');
+
+const OcAuth = require("oc_app-auth");
+const Config = require('../config/config');
 const Command = require("./command");
 
 const App = {
-  init({ api = {}, publicPath = path.resolve(__dirname, "../../../../public") } = {}) {
+  async init({ api = {}, publicPath = path.resolve(__dirname, "../../../../public") } = {}) {
     const app = express();
 
     // Middleware
     app.use(cors());
 
+    // cookies for auth
+    app.use(cookieParser());
+
     // path to static folder, where are also assets
     app.use(express.static(publicPath));
+
+    OcAuth.init(app);
 
     // Define your api here
     Command.createCommands(app, api);
@@ -24,8 +32,8 @@ const App = {
     });
 
     // Start the server
-    app.listen(config.port, () => {
-      console.log(`Server is running on port ${config.port}`);
+    app.listen(Config.port, () => {
+      console.log(`Server is running on port ${Config.port}`);
     });
 
     return app;
